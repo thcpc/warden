@@ -1,0 +1,5 @@
+id: "diff_report"
+name: "数据对比报告"
+description: "比较数据的差异报告"
+version: '1_0_0'
+

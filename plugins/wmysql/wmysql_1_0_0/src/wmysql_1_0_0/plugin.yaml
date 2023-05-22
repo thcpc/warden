@@ -1,0 +1,11 @@
+id: "wmysql"
+name: "mysql 执行SQL文件"
+description: "mysql 执行SQL文件"
+version: "1_0_0"
+env: dev
+dev:
+  mysql: C:\\mysql-8.0.31-winx64\\bin\\mysql
+  mysql_dump: C:\\mysql-8.0.31-winx64\\bin\\mysqldump
+prod:
+  mysql: C:\\Program Files\\MySQL\\mysql-8.0.21-winx64\\bin\\mysql
+  mysql_dump: C:\\Program Files\\MySQL\\mysql-8.0.21-winx64\\bin\\mysqldump

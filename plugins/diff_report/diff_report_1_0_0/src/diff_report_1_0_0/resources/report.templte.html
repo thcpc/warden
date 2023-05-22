@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Compare Table</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx"
+          crossorigin="anonymous">
+    <style type="text/css">
+        .diff {
+            background-color: #dd9272;
+        }
+        .left_span{
+                display: inline-block;
+                margin-left:94px;
+                width:200px;
+        }
+        .right_span{
+                display: inline-block;
+                margin-left:457px;
+        }
+    </style>
+</head>
+<body>
+<h1>系统:{{System}} 版本:{{Version}}</h1>
+<p>Left: V{{Version}} 增量脚本 + V{{Version-1}} 全量脚本,Right: V{{Version}} 全量脚本</p>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+        crossorigin="anonymous"></script>
+        <script
+  src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
+  integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI="
+  crossorigin="anonymous"></script>
+<div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+  <input type="radio" class="btn-check" name="btnradio" id="displayAll" autocomplete="off" checked>
+  <label class="btn btn-outline-primary" for="displayAll">显示全部</label>
+
+  <input type="radio" class="btn-check" name="btnradio" id="displayDiff" autocomplete="off">
+  <label class="btn btn-outline-primary" for="displayDiff">只显示差异</label>
+</div>
+<div class="accordion accordion-flush" id="accordionFlushExample">
+    {% for accordion_item in accordion_items %}
+    <div class="accordion-item  _{{ accordion_item.css_clazz }}">
+        <h2 class="accordion-header" id="flush-heading{{loop.index}}">
+            <button class="accordion-button collapsed {{ accordion_item.css_clazz }}" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse{{loop.index}}" aria-expanded="false" aria-controls="flush-collapse{{loop.index}}">
+                <div class="left_span">{{ accordion_item.left_table }}</div><div class="right_span">{{ accordion_item.right_table }}</div>
+            </button>
+        </h2>
+        <div id="flush-collapse{{loop.index}}" class="accordion-collapse collapse" aria-labelledby="flush-heading{{loop.index}}" data-bs-parent="#accordionFlushExample">
+            <div class="accordion-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            {% for p_tag in accordion_item.left_col.p_tags %}
+                            <p> {{p_tag.html()}}</p>
+                            {% endfor %}
+                        </div>
+
+                        <div class="col">
+                           {% for p_tag in accordion_item.right_col.p_tags %}
+                            <p> {{p_tag.html()}}</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+</body>
+<script type="text/javascript">
+    $(function () {
+      $("#displayAll").click(function(){
+       displayAll();
+      })
+      $("#displayDiff").click(function(){
+        displayDiff();
+      })
+    });
+    function displayAll(){
+      $(".accordion-item").show();
+    }
+    function displayDiff(){
+        $(".accordion-item").hide();
+        $("._diff").show();
+    }
+  </script>
+</html>

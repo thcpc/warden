@@ -1,0 +1,1 @@
+call GET_DDL(%(table_name)s);

@@ -1,5 +1,7 @@
 import importlib
-from flask import Blueprint, render_template
+from plugincore.cglib import Cglib
+from flask import Blueprint, render_template, request
+
 bp = Blueprint("main", __name__, url_prefix="/")
 
 
@@ -8,11 +10,18 @@ def index():
     return render_template('main/index.html', task_cards=user_settings())
 
 
+@bp.route('/submit_task', methods=['POST'])
+def submit_task():
+    form = request.form
+
+
 def user_settings() -> list[dict]:
-    tasks_cards = [dict(id="tsc",
-                        name="表结构对比",
-                        description="数据库结构比对工具，主要用来比对指定的两个 schema 的结构是否一致")]
-    return tasks_cards
+    plugins = [dict(id="db_compare", version="1_0_0")]
+    plugin_cards = []
+    for plugin in plugins:
+        card = Cglib.plugin_factory(plugin.get("id"), plugin.get("version"))
+        plugin_cards.append(dict(name=card.name, description=card.description, id=card.id, home=card.home))
+    return plugin_cards
 # import pkg_resources
 #
 #

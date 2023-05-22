@@ -1,0 +1,2 @@
+[db_compare_1_0_0.plugin]
+db_compare = db_compare_1_0_0.db_compare_plugin:DbComparePlugin
