@@ -6,7 +6,7 @@ class AccordionItem:
     def __init__(self, left_table, right_table, compare, compare_results: list[dict]):
         self.left_table = left_table
         self.right_table = right_table
-        self.css_clazz = "" if compare == 'eql' else "diff"
+        self.css_clazz = "eql" if compare == 'eql' else "diff"
         self.left_col = self.init_left_cols(compare_results)
         self.right_col = self.init_right_cols(compare_results)
 

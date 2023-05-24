@@ -4,6 +4,9 @@ from os import path
 from jinja2 import FileSystemLoader, Environment
 from plugincore import Plugin
 
+from diff_report_1_0_0._plugin_args import _PluginArgs
+from diff_report_1_0_0.viwe_factory import ViewFactory
+
 
 class DiffReportPlugin(Plugin):
 
@@ -13,11 +16,6 @@ class DiffReportPlugin(Plugin):
     @property
     def home(self): ...
 
-
-
     def task(self, *args, **kwargs):
-        loader = FileSystemLoader(searchpath=os.path.join(path.dirname(__file__), "resources"))
-        env = Environment(loader=loader)
-        template = env.get_template("home.jinjia.html")
+        ViewFactory(_PluginArgs(kwargs)).gen()
 
-        return template.render()

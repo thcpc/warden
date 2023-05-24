@@ -56,7 +56,7 @@ class CompareTask:
                         aci = dict(leftName=self.left.get_table_by_index(i1 + offset),
                                    rightName=self.right.get_table_by_index(j1 + offset))
                         aci["compare"] = "eql"
-                        aci["eql"] = [CompareResult("equal", left_ddl, right_ddl)]
+                        aci["eql"] = [CompareResult("equal", left_ddl, right_ddl).dict()]
                         self.result.append(aci)
                         # self.result.append({"name": self.left.get_table_by_index(index), "compare": "eql", "eql": [CompareResult("equal", left_ddl, right_ddl)]})
                     offset += 1

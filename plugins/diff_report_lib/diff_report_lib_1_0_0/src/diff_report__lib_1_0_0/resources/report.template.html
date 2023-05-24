@@ -6,37 +6,62 @@
     <title>Compare Table</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx"
           crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
     <style type="text/css">
+
         .diff {
-            background-color: #dd9272;
+
+            background-color: #f0be96;
+        }
+        .eql {
+            background-color: #a3cfbb;
         }
         .left_span{
                 display: inline-block;
-                margin-left:94px;
+                margin-left:30px;
                 width:200px;
         }
         .right_span{
                 display: inline-block;
                 margin-left:457px;
         }
+        .left_desc_span{
+                display: inline-block;
+                margin-left:50px;
+                width:200px;
+        }
+        .right_desc_span{
+                display: inline-block;
+                margin-left:457px;
+        }
     </style>
 </head>
-<body>
-<h1>系统:{{System}} 版本:{{Version}}</h1>
-<p>Left: V{{Version}} 增量脚本 + V{{Version-1}} 全量脚本,Right: V{{Version}} 全量脚本</p>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
-        crossorigin="anonymous"></script>
-        <script
-  src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
-  integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI="
-  crossorigin="anonymous"></script>
-<div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-  <input type="radio" class="btn-check" name="btnradio" id="displayAll" autocomplete="off" checked>
-  <label class="btn btn-outline-primary" for="displayAll">显示全部</label>
+<body class="container-xl">
+<h1>{{title}}</h1>
 
-  <input type="radio" class="btn-check" name="btnradio" id="displayDiff" autocomplete="off">
-  <label class="btn btn-outline-primary" for="displayDiff">只显示差异</label>
+<div class="mb-3">
+<div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+  <div class="btn-group me-2" role="group" aria-label="First group">
+    <button type="button" class="btn btn-primary" id="displayAll">
+    * <span class="badge text-bg-secondary">4</span>
+    </button>
+  </div>
+  <div class="btn-group me-2" role="group" aria-label="Second group">
+      <button type="button" class="btn btn-success" id="displaySame">
+    == <span class="badge text-bg-secondary">4</span>
+      </button>
+  </div>
+  <div class="btn-group" role="group" aria-label="Third group">
+       <button type="button" class="btn btn-danger" id="displayDiff">
+    <> <span class="badge text-bg-secondary">4</span>
+      </button>
+  </div>
 </div>
+</div>
+<div class="left_desc_span">{{left}}</div><div class="right_desc_span">{{right}}</div>
+<div class="mb-3">
 <div class="accordion accordion-flush" id="accordionFlushExample">
     {% for accordion_item in accordion_items %}
     <div class="accordion-item  _{{ accordion_item.css_clazz }}">
@@ -67,6 +92,7 @@
     </div>
     {% endfor %}
 </div>
+</div>
 </body>
 <script type="text/javascript">
     $(function () {
@@ -76,6 +102,9 @@
       $("#displayDiff").click(function(){
         displayDiff();
       })
+      $("#displaySame").click(function(){
+        displaySame();
+      })
     });
     function displayAll(){
       $(".accordion-item").show();
@@ -83,6 +112,10 @@
     function displayDiff(){
         $(".accordion-item").hide();
         $("._diff").show();
+    }
+    function displaySame(){
+        $(".accordion-item").hide();
+        $("._eql").show();
     }
   </script>
 </html>
