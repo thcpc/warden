@@ -2,7 +2,7 @@ from os import path
 
 from plugincore import Plugin
 
-from diff_report_lib_1_0_0._plugin_args import _PluginArgs
+from diff_report_lib_1_0_0.diff_report_lib_plugin_form import DiffReportLibPluginForm
 from diff_report_lib_1_0_0.html.html_factory import HtmlFactory
 
 
@@ -14,5 +14,5 @@ class DiffReportLibPlugin(Plugin):
     @property
     def env(self): return self.config.get("env", 'prod')
 
-    def task(self, *args, **kwargs):
-        HtmlFactory(_PluginArgs(kwargs)).gen(self.env)
+    def task(self, form_data: dict):
+        HtmlFactory(DiffReportLibPluginForm(self, form_data)).gen(self.env)
