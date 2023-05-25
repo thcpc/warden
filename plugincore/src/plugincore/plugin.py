@@ -39,12 +39,12 @@ class Plugin:
     def version(self):
         return self.required_property("version")
 
-    def _run_before(self, *args, **kwargs):
+    def _run_before(self, kwargs: dict):
         for plugin in self.before_plugins:
             self.plugin_run_result.append(Cglib.plugin_factory(plugin.get("plugin_id"), plugin.get("version")).run(*args, **kwargs))
             if not self.plugin_run_result.ok: break
 
-    def _run_after(self, *args, **kwargs):
+    def _run_after(self, kwargs: dict):
         for plugin in self.after_plugins:
             self.plugin_run_result.append(Cglib.plugin_factory(plugin.get("plugin_id"), plugin.get("version")).run(*args, **kwargs))
             if not self.plugin_run_result.ok: break
@@ -53,7 +53,7 @@ class Plugin:
     需覆写
     """
 
-    def task(self, *args, **kwargs):
+    def task(self, kwargs: dict):
         ...
 
     """
@@ -63,12 +63,12 @@ class Plugin:
     def finalize(self):
         ...
 
-    def run(self, *args, **kwargs):
-        self._run_before(*args, **kwargs)
+    def run(self, kwargs: dict):
+        self._run_before(kwargs)
         if self.plugin_run_result.ok:
-            self.task(*args, **kwargs)
+            self.task(kwargs)
         if self.plugin_run_result.ok:
-            self._run_after(*args, **kwargs)
+            self._run_after(kwargs)
         if self.plugin_run_result.ok:
             self.finalize()
         return self.plugin_run_result
