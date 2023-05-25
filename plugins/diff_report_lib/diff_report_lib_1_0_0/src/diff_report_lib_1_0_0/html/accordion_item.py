@@ -1,5 +1,5 @@
-from diff_report_1_0_0.accordion_col import AccordionCol
-from diff_report_1_0_0.p_tag import PTag
+from diff_report_lib_1_0_0.html.accordion_col import AccordionCol
+from diff_report_lib_1_0_0.html.p_tag import PTag
 
 
 class AccordionItem:

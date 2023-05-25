@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Compare Report</title>
+    {% if running_env=='dev' %}
+        {% block dev %}
+        {% endblock %}
+    {% else %}
+        {% block prod %}
+        {% endblock %}
+    {% endif%}
+    <style type="text/css">
+
+        .diff {
+
+            background-color: #f0be96;
+        }
+        .eql {
+            background-color: #a3cfbb;
+        }
+        .left_span{
+                display: inline-block;
+                margin-left:30px;
+                width:200px;
+        }
+        .right_span{
+                display: inline-block;
+                margin-left:457px;
+        }
+        .left_desc_span{
+                display: inline-block;
+                margin-left:50px;
+                width:200px;
+        }
+        .right_desc_span{
+                display: inline-block;
+                margin-left:457px;
+        }
+    </style>
+</head>
+<body class="container-xl">
+<h1>{{title}}</h1>
+
+<div class="mb-3">
+<div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+  <div class="btn-group me-2" role="group" aria-label="First group">
+    <button type="button" class="btn btn-primary" id="displayAll">
+    * <span class="badge text-bg-secondary">{{allCount}}</span>
+    </button>
+  </div>
+  <div class="btn-group me-2" role="group" aria-label="Second group">
+      <button type="button" class="btn btn-success" id="displaySame">
+    == <span class="badge text-bg-secondary">{{sameCount}}</span>
+      </button>
+  </div>
+  <div class="btn-group" role="group" aria-label="Third group">
+       <button type="button" class="btn btn-danger" id="displayDiff">
+    <> <span class="badge text-bg-secondary">{{diffCount}}</span>
+      </button>
+  </div>
+</div>
+</div>
+<div class="left_desc_span">{{left}}</div><div class="right_desc_span">{{right}}</div>
+<div class="mb-3">
+<div class="accordion accordion-flush" id="accordionFlushExample">
+    {% for accordion_item in accordion_items %}
+    <div class="accordion-item  _{{ accordion_item.css_clazz }}">
+        <h2 class="accordion-header" id="flush-heading{{loop.index}}">
+            <button class="accordion-button collapsed {{ accordion_item.css_clazz }}" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse{{loop.index}}" aria-expanded="false" aria-controls="flush-collapse{{loop.index}}">
+                <div class="left_span">{{ accordion_item.left_table }}</div><div class="right_span">{{ accordion_item.right_table }}</div>
+            </button>
+        </h2>
+        <div id="flush-collapse{{loop.index}}" class="accordion-collapse collapse" aria-labelledby="flush-heading{{loop.index}}" data-bs-parent="#accordionFlushExample">
+            <div class="accordion-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            {% for p_tag in accordion_item.left_col.p_tags %}
+                            <p> {{p_tag.html()}}</p>
+                            {% endfor %}
+                        </div>
+
+                        <div class="col">
+                           {% for p_tag in accordion_item.right_col.p_tags %}
+                            <p> {{p_tag.html()}}</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+</div>
+</body>
+<script type="text/javascript">
+    $(function () {
+      $("#displayAll").click(function(){
+       displayAll();
+      })
+      $("#displayDiff").click(function(){
+        displayDiff();
+      })
+      $("#displaySame").click(function(){
+        displaySame();
+      })
+    });
+    function displayAll(){
+      $(".accordion-item").show();
+    }
+    function displayDiff(){
+        $(".accordion-item").hide();
+        $("._diff").show();
+    }
+    function displaySame(){
+        $(".accordion-item").hide();
+        $("._eql").show();
+    }
+  </script>
+</html>
