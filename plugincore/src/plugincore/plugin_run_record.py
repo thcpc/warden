@@ -1,4 +1,4 @@
-class PluginRunLog:
+class PluginRunRecord:
     def __init__(self):
         self.record = {}
 

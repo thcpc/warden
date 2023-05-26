@@ -1,7 +1,9 @@
 import os
 
 from plugincore.plugin import Plugin
-from plugincore.plugin_run_log import PluginRunLog
+
+
+from plugincore.plugin_run_record import PluginRunRecord
 
 
 class CustomPlugin(Plugin):
@@ -9,8 +11,8 @@ class CustomPlugin(Plugin):
         super().__init__(os.path.dirname(__file__))
 
     def task(self, *args, **kwargs):
-        log = PluginRunLog() << {"status": 200 } << {"plugin.id": self.id, "plugin.version": self.version}
-        self.plugin_run_result.add(log)
+        log = PluginRunRecord() << {"status": 200 } << {"plugin.id": self.id, "plugin.version": self.version}
+        self.plugin_run_audit.add(log)
 
 
 def test_plugin_info():
