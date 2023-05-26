@@ -85,6 +85,7 @@ class Plugin:
             self._run_before(kwargs)
             if self.plugin_run_audit.ok:
                 self.task(kwargs)
+                self.audit(dict(status=200, msg="success"))
             if self.plugin_run_audit.ok:
                 self._run_after(kwargs)
             if self.plugin_run_audit.ok:
