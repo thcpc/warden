@@ -6,3 +6,4 @@ def test_plugin_run():
     diff_report = DiffReportLibPlugin()
     compare_data = dict(task_id=11111, title="测试", left="xxxxxx", right="ddddddd", compare_data=test_data)
     diff_report.run({diff_report.id: compare_data})
+    print(diff_report.plugin_run_audit)
