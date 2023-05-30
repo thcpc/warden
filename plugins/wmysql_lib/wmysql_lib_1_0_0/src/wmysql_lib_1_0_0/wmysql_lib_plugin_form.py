@@ -48,4 +48,5 @@ class WmysqlLibPluginForm(PluginForm):
     @property
     @required(exception_class=PluginRunningArgsErr, err_msg='WmysqlLibPluginForm\'s database_ops Required')
     def database_ops(self):
+        if self.form_data.get("database_ops") is None: return None
         return [DataBaseOp(data) for data in self.form_data.get("database_ops")]
