@@ -1,5 +1,5 @@
-from .wmysql_plugin import WMysqlPlugin
+from .wmysql_lib_plugin import WMysqlLibPlugin
 
 __all__ = [
-    'WMysqlPlugin'
+    'WMysqlLibPlugin'
 ]

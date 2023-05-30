@@ -1,4 +1,4 @@
-id: "wmysql"
+id: "wmysql_lib"
 name: "mysql 执行SQL文件"
 description: "mysql 执行SQL文件"
 version: "1_0_0"
