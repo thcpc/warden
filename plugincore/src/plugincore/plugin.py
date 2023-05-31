@@ -4,6 +4,7 @@ from cjen.nene.properties import required
 
 from plugincore.exceptions.plugin_fail_err import PluginFailErr
 from plugincore.exceptions.plugin_property_err import PluginPropertyErr
+from plugincore.exceptions.plugin_running_args_err import PluginRunningArgsErr
 from plugincore.plugin_run_audit import PluginRunAudit
 from plugincore.cglib import Cglib
 from plugincore.plugin_run_record import PluginRunRecord
@@ -14,6 +15,7 @@ class Plugin:
         with open(os.path.join(abs_path, 'plugin.yaml'), encoding='utf-8') as f:
             self.config = yaml.safe_load(f.read())
         self.plugin_run_audit = PluginRunAudit()
+        self.step_count = 0
 
     # def required_property(self, key):
     #     if self.config.get(key) is None: raise Exception(f'Plugin {key} is Required')
@@ -35,11 +37,11 @@ class Plugin:
         return self.config.get("description")
 
     @property
-    def before_plugins(self):
+    def before_plugins(self) -> list:
         return self.config.get("before_plugins", [])
 
     @property
-    def after_plugins(self):
+    def after_plugins(self) -> list:
         return self.config.get("after_plugins", [])
 
     @property
@@ -80,18 +82,30 @@ class Plugin:
     def finalize(self):
         ...
 
-    def run(self, kwargs: dict):
+    def run(self, form_data: dict, need_estimate: bool = False):
         try:
-            self._run_before(kwargs)
+            if need_estimate:
+                self.total_estimate(form_data)
+            self._run_before(form_data)
             if self.plugin_run_audit.ok:
-                self.task(kwargs)
+                self.task(form_data)
                 self.audit(dict(status=200, msg="success"))
             if self.plugin_run_audit.ok:
-                self._run_after(kwargs)
+                self._run_after(form_data)
             if self.plugin_run_audit.ok:
                 self.finalize()
-        except (PluginFailErr, PluginPropertyErr) as e:
+        except (PluginFailErr, PluginPropertyErr, PluginRunningArgsErr) as e:
             self.audit(e())
-        # except PluginPropertyErr as e:
-        #     self.audit(e())
+
         return self.plugin_run_audit
+
+    def total_estimate(self, form_data) -> int:
+        if self.step_count == 0:
+            for plugin in self.before_plugins + self.after_plugins:
+                self.step_count += Cglib.plugin_factory(plugin.get("plugin_id"), plugin.get("version")).estimate(form_data)
+            self.step_count += self.estimate(form_data)
+        return self.step_count
+
+    def estimate(self, form_data) -> int: return 1
+
+    def progress(self): ...
