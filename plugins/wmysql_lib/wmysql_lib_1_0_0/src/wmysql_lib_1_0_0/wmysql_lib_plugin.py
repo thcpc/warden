@@ -4,9 +4,7 @@ from os import path
 
 from plugincore import Plugin
 
-from wmysql_lib_1_0_0.support.dump_in import DumpIn
-from wmysql_lib_1_0_0.support.dump_out import DumpOut
-from wmysql_lib_1_0_0.wmysql_lib_plugin_form import WmysqlLibPluginForm
+from wmysql_lib_1_0_0.properties.form.wmysql_lib_plugin_form import WmysqlLibPluginForm
 
 
 class WMysqlLibPlugin(Plugin):

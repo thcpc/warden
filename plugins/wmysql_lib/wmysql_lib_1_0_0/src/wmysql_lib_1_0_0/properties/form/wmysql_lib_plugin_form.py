@@ -2,7 +2,7 @@ from cjen.nene.properties import required
 from plugincore.exceptions.plugin_running_args_err import PluginRunningArgsErr
 from plugincore.plugin_form import PluginForm
 
-from wmysql_lib_1_0_0.config.database_op import DataBaseOp
+from wmysql_lib_1_0_0.properties.form.database_op import DataBaseOp
 
 
 class WmysqlLibPluginForm(PluginForm):
