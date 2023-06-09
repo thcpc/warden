@@ -23,11 +23,8 @@ class DBProcess:
         pool = multiprocessing.Pool(processes=DBProcess.MAX_PARALLEL_WORKERS)
         results = []
         apply_results = []
-        manager = multiprocessing.Manager()
-        share_dict = manager.dict()
-        share_dict.update(self.driver_info)
         for work in self.workers(sql_statements):
-            result = pool.apply_async(self.fetchmany_worker, args=(share_dict,
+            result = pool.apply_async(self.fetchmany_worker, args=(self.driver_info,
                                                                    work))
             apply_results.append(result)
         pool.close()
