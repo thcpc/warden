@@ -9,7 +9,7 @@ class ProcessorProperty:
 
     @property
     @required(exception_class=PluginPropertyErr, err_msg='Plugin id is Required')
-    def processor(self): return self.meta.get("processor")
+    def name(self): return self.meta.get("name")
 
     @property
     @required(exception_class=PluginPropertyErr, err_msg='Plugin id is Required')

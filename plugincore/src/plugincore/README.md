@@ -13,11 +13,18 @@ description: "数据库结构比对工具，主要用来比对指定的两个 sc
 version: 1_0_0
 ## 依赖的任务，顺序执行
 ## 可选项
-dependence:
-  - processor: "processor1"
+pre_processors:
+  - name: "processor1"
     plugin_id: btest1
     version: 1_0_0
-  - processor: "processor2"
+  - name: "processor2"
+    plugin_id: btest1
+    version: 1_0_0
+post_processors:
+  - name: "processor1"
+    plugin_id: btest1
+    version: 1_0_0
+  - name: "processor2"
     plugin_id: btest1
     version: 1_0_0
 ```

@@ -34,9 +34,14 @@ class Plugin:
         return self.config.get("description")
 
     @property
-    def dependence(self) -> list:
-        if not self.config.get("dependence"): return []
-        return [ProcessorProperty(meta) for meta in self.config.get("dependence")]
+    def pre_processors(self) -> list:
+        if not self.config.get("pre_processors"): return []
+        return [ProcessorProperty(meta) for meta in self.config.get("pre_processors")]
+
+    @property
+    def post_processors(self) -> list:
+        if not self.config.get("post_processors"): return []
+        return [ProcessorProperty(meta) for meta in self.config.get("post_processors")]
 
     @property
     @required(exception_class=PluginPropertyErr, err_msg='Plugin version is Required')
@@ -50,10 +55,17 @@ class Plugin:
             record = PluginRunRecord() << e()
         self.plugin_run_audit.add(record)
 
-    def _run_dependence(self, form_data: dict):
-        for dependent in self.dependence:
-            record = Cglib.plugin_factory(dependent.plugin_id, dependent.version).run(form_data)
-            record = record << {"processor": dependent.processor}
+    def _run_pre_processors(self, form_data: dict):
+        for processor in self.pre_processors:
+            record = Cglib.plugin_factory(processor.plugin_id, processor.version).run(form_data)
+            record = record << {"processor": processor.name}
+            self.plugin_run_audit.append(record)
+            if not self.plugin_run_audit.ok: break
+
+    def _run_post_processors(self, form_data: dict):
+        for processor in self.post_processors:
+            record = Cglib.plugin_factory(processor.plugin_id, processor.version).run(form_data)
+            record = record << {"processor": processor.name}
             self.plugin_run_audit.append(record)
             if not self.plugin_run_audit.ok: break
 
@@ -64,10 +76,10 @@ class Plugin:
     def processor(self, form_data: dict):
         ...
 
-    def pre_processor(self, form_data: dict):
+    def before(self, form_data: dict):
         ...
 
-    def post_processor(self, form_data: dict):
+    def after(self, form_data: dict):
         ...
 
     """
@@ -81,10 +93,11 @@ class Plugin:
         try:
             if need_estimate:
                 self.total_estimate(form_data)
-            for callee in [self._run_dependence,
-                           self.pre_processor,
+            for callee in [self._run_pre_processors,
+                           self.before,
                            self.processor,
-                           self.post_processor,
+                           self.after,
+                           self._run_post_processors,
                            self.finalize]:
                 if self.plugin_run_audit.ok:
                     callee(form_data)
@@ -97,8 +110,8 @@ class Plugin:
     def total_estimate(self, form_data) -> int:
 
         if self.step_count == 0:
-            for plugin in self.dependence:
-                self.step_count += Cglib.plugin_factory(plugin.get("plugin_id"), plugin.get("version")).estimate(
+            for processor in self.pre_processors + self.post_processors:
+                self.step_count += Cglib.plugin_factory(processor.plugin_id, processor.version).estimate(
                     form_data)
             self.step_count += self.estimate(form_data)
         return self.step_count
