@@ -3,7 +3,9 @@ from os import path
 
 from jinja2 import FileSystemLoader, Environment
 from plugincore import Plugin
+
 from db_compare_1_0_0.compare.compare_task import CompareTask
+from db_compare_1_0_0.db_compare_plugin_form import DbComparePluginForm
 from db_compare_1_0_0.schema import Schema
 
 
@@ -24,13 +26,12 @@ class DbComparePlugin(Plugin):
     def prepare_procedure(self):
         return os.path.join(path.dirname(__file__), "resources", "get_ddl_procedure.sql")
 
-    def task(self, *args, **kwargs):
-        left = Schema(kwargs.get("databases")[0].get("database_info"))
-        left.load()
-        right = Schema(kwargs.get("databases")[1].get("database_info"))
-        right.load()
-        compare_task = CompareTask(left=left, right=right)
+    def task(self, form_data: dict):
+        plugin_form = DbComparePluginForm(self, form_data)
+        compare_task = CompareTask([Schema(database).load() for database in plugin_form.databases])
         compare_task.run()
-        print(compare_task.result)
+        form_data["diff_report_lib"]["compare_data"] = compare_task.result
+        self.audit(dict(status=200, msg=f"{self.id} {compare_task.msg()} finish"))
 
-
+    def estimate(self, form_data) -> int:
+        return super().estimate(form_data) + 1

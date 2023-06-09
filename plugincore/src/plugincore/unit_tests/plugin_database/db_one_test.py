@@ -1,10 +1,10 @@
 import time
 
-from wmysql_lib_1_0_0.config.db_driver import DBDriver
-from wmysql_lib_1_0_0.support.db_one import DBOne
-from wmysql_lib_1_0_0.unit_tests.test_commit_data import commit_sqls, procedure_sql
-from wmysql_lib_1_0_0.unit_tests.test_select_data import database_info_dict
-from wmysql_lib_1_0_0.wmysql_lib_plugin_form import DataBaseInfo
+from plugincore.database.config.database_info import DataBaseInfo
+from plugincore.database.support.database_api.db_one import DBOne
+from plugincore.database.config.db_driver import DBDriver
+from plugincore.unit_tests.plugin_database.test_commit_data import commit_sqls, procedure_sql
+from plugincore.unit_tests.plugin_database.test_select_data import database_info_dict
 
 
 def db_one_select():

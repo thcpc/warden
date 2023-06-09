@@ -1,6 +1,7 @@
+from plugincore.database.config.db_driver import DBDriver
 from plugincore.exceptions.plugin_fail_err import PluginFailErr
 
-from wmysql_lib_1_0_0.config.db_driver import DBDriver
+
 
 
 class DBOne:

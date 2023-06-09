@@ -89,11 +89,11 @@ class Plugin:
             self._run_before(form_data)
             if self.plugin_run_audit.ok:
                 self.task(form_data)
-                self.audit(dict(status=200, msg="success"))
             if self.plugin_run_audit.ok:
                 self._run_after(form_data)
             if self.plugin_run_audit.ok:
                 self.finalize()
+            self.audit(dict(status=200, msg=f"{self.id} success"))
         except (PluginFailErr, PluginPropertyErr, PluginRunningArgsErr) as e:
             self.audit(e())
 

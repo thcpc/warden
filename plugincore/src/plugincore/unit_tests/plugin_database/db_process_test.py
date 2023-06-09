@@ -1,8 +1,7 @@
 import time
 
-from wmysql_lib_1_0_0.support.db_process import DBProcess
-
-from wmysql_lib_1_0_0.unit_tests.test_select_data import database_info_dict, select_sqls
+from plugincore.database.support.database_api.db_process import DBProcess
+from plugincore.unit_tests.plugin_database.test_select_data import select_sqls, database_info_dict
 
 
 def db_process_select():

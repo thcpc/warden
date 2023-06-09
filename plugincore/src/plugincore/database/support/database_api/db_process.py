@@ -1,9 +1,8 @@
 import multiprocessing
 
-from wmysql_lib_1_0_0.config.database_info import DataBaseInfo
-from wmysql_lib_1_0_0.config.db_driver import DBDriver
-from wmysql_lib_1_0_0.support.db_thread import DBThread
-
+from plugincore.database.config.database_info import DataBaseInfo
+from plugincore.database.config.db_driver import DBDriver
+from plugincore.database.support.database_api.db_thread import DBThread
 
 
 class DBProcess:
@@ -36,4 +35,3 @@ class DBProcess:
         for apply in apply_results:
             results.extend(apply.get())
         return results
-

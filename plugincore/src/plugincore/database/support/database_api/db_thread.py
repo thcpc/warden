@@ -1,7 +1,8 @@
 
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from wmysql_lib_1_0_0.config.db_driver import DBDriver
-from wmysql_lib_1_0_0.support.db_one import DBOne
+
+from plugincore.database.config.db_driver import DBDriver
+from plugincore.database.support.database_api.db_one import DBOne
 
 
 class DBThread:
