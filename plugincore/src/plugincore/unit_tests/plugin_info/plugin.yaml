@@ -1,14 +1,11 @@
 id: "tsc"
 name: "表结构对比"
 description: "数据库结构比对工具，主要用来比对指定的两个 schema 的结构是否一致"
-version: 1_0_0
-before_plugins:
+version: "1_0_0"
+dependence:
   - plugin_id: btest1
-    version: 1_0_0
+    version: "1_0_0"
+    processor: "processor1"
   - plugin_id: btest2
-    version: 1_0_1
-after_plugins:
-  - plugin_id: atest1
-    version: 1_0_0
-  - plugin_id: atest2
-    version: 1_0_1
+    version: "1_0_1"
+    processor: "processor2"

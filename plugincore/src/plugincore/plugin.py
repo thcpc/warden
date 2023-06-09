@@ -8,6 +8,7 @@ from plugincore.exceptions.plugin_running_args_err import PluginRunningArgsErr
 from plugincore.plugin_run_audit import PluginRunAudit
 from plugincore.cglib import Cglib
 from plugincore.plugin_run_record import PluginRunRecord
+from plugincore.properties.processor_property import ProcessorProperty
 
 
 class Plugin:
@@ -16,10 +17,6 @@ class Plugin:
             self.config = yaml.safe_load(f.read())
         self.plugin_run_audit = PluginRunAudit()
         self.step_count = 0
-
-    # def required_property(self, key):
-    #     if self.config.get(key) is None: raise Exception(f'Plugin {key} is Required')
-    #     return self.config.get(key)
 
     @property
     @required(exception_class=PluginPropertyErr, err_msg='Plugin id is Required')
@@ -37,12 +34,9 @@ class Plugin:
         return self.config.get("description")
 
     @property
-    def before_plugins(self) -> list:
-        return self.config.get("before_plugins", [])
-
-    @property
-    def after_plugins(self) -> list:
-        return self.config.get("after_plugins", [])
+    def dependence(self) -> list:
+        if not self.config.get("dependence"): return []
+        return [ProcessorProperty(meta) for meta in self.config.get("dependence")]
 
     @property
     @required(exception_class=PluginPropertyErr, err_msg='Plugin version is Required')
@@ -56,43 +50,44 @@ class Plugin:
             record = PluginRunRecord() << e()
         self.plugin_run_audit.add(record)
 
-    def _run_before(self, form_data: dict):
-        for plugin in self.before_plugins:
-            self.plugin_run_audit.append(
-                Cglib.plugin_factory(plugin.get("plugin_id"), plugin.get("version")).run(form_data))
-            if not self.plugin_run_audit.ok: break
-
-    def _run_after(self, form_data: dict):
-        for plugin in self.after_plugins:
-            self.plugin_run_audit.append(
-                Cglib.plugin_factory(plugin.get("plugin_id"), plugin.get("version")).run(form_data))
+    def _run_dependence(self, form_data: dict):
+        for dependent in self.dependence:
+            record = Cglib.plugin_factory(dependent.plugin_id, dependent.version).run(form_data)
+            record = record << {"processor": dependent.processor}
+            self.plugin_run_audit.append(record)
             if not self.plugin_run_audit.ok: break
 
     """
     需覆写
     """
 
-    def task(self, form_data: dict):
+    def processor(self, form_data: dict):
+        ...
+
+    def pre_processor(self, form_data: dict):
+        ...
+
+    def post_processor(self, form_data: dict):
         ...
 
     """
     需覆写
     """
 
-    def finalize(self):
+    def finalize(self, form_data: dict):
         ...
 
     def run(self, form_data: dict, need_estimate: bool = False):
         try:
             if need_estimate:
                 self.total_estimate(form_data)
-            self._run_before(form_data)
-            if self.plugin_run_audit.ok:
-                self.task(form_data)
-            if self.plugin_run_audit.ok:
-                self._run_after(form_data)
-            if self.plugin_run_audit.ok:
-                self.finalize()
+            for callee in [self._run_dependence,
+                           self.pre_processor,
+                           self.processor,
+                           self.post_processor,
+                           self.finalize]:
+                if self.plugin_run_audit.ok:
+                    callee(form_data)
             self.audit(dict(status=200, msg=f"{self.id} success"))
         except (PluginFailErr, PluginPropertyErr, PluginRunningArgsErr) as e:
             self.audit(e())
@@ -100,12 +95,16 @@ class Plugin:
         return self.plugin_run_audit
 
     def total_estimate(self, form_data) -> int:
+
         if self.step_count == 0:
-            for plugin in self.before_plugins + self.after_plugins:
-                self.step_count += Cglib.plugin_factory(plugin.get("plugin_id"), plugin.get("version")).estimate(form_data)
+            for plugin in self.dependence:
+                self.step_count += Cglib.plugin_factory(plugin.get("plugin_id"), plugin.get("version")).estimate(
+                    form_data)
             self.step_count += self.estimate(form_data)
         return self.step_count
 
-    def estimate(self, form_data) -> int: return 1
+    def estimate(self, form_data) -> int:
+        return 1
 
-    def progress(self): ...
+    def progress(self):
+        ...
