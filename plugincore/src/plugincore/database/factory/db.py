@@ -1,7 +1,7 @@
 from wmysql_lib_1_0_0.config.db_driver import DBDriver
-from wmysql_lib_1_0_0.support.db_one import DBOne
-from wmysql_lib_1_0_0.support.db_process import DBProcess
-from wmysql_lib_1_0_0.support.db_thread import DBThread
+from wmysql_lib_1_0_0.support.database_api.db_one import DBOne
+from wmysql_lib_1_0_0.support.database_api.db_process import DBProcess
+from wmysql_lib_1_0_0.support.database_api.db_thread import DBThread
 
 
 def factory(slq_count: int, db_driver: DBDriver):
