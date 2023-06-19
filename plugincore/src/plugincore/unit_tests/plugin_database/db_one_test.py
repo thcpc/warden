@@ -9,11 +9,14 @@ from plugincore.unit_tests.plugin_database.test_select_data import database_info
 
 def db_one_select():
     start = time.perf_counter()
-    tdb = DBOne(db_driver=DBDriver(DataBaseInfo(database_info_dict)))
+    tdb = DBOne(db_driver=DBDriver(database_info_dict))
+    print(time.perf_counter() - start)
+    start = time.perf_counter()
     print(tdb.fetchmany(sql_statement="call GET_DDL('eclinical_study');"))
     # for sql in select_sqls:
     #     print(tdb.fetchmany(sql_statement=sql, where=None))
     print(time.perf_counter() - start)
+    tdb.close()
 
 
 def db_one_commit():
@@ -34,4 +37,5 @@ def db_one_procedure():
 if __name__ == '__main__':
     # db_one_commit()
     db_one_select()
+
     # db_one_procedure()

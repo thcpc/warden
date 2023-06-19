@@ -8,6 +8,10 @@ class PluginRunAudit:
     def add(self, record: PluginRunRecord):
         self.plugin_records.append(record)
 
+    def __lshift__(self, new_property: dict):
+        for record in self.plugin_records:
+            record << new_property
+
     @property
     def ok(self):
         return len(list(filter(lambda record: not record.ok, self.plugin_records))) == 0

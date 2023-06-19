@@ -1,25 +1,20 @@
-import pymysql
-from dbutils.pooled_db import PooledDB
+# import pymysql
+# from dbutils.pooled_db import PooledDB
+import mysql.connector
+
+from plugincore.exceptions.plugin_fail_err import PluginFailErr
 
 
 class DBDriver:
     def __init__(self, database_info):
-        self.database_info = database_info
-        self.pool_db = PooledDB(
-            creator=pymysql,
-            maxconnections=20,
-            mincached=10,
-            maxcached=10,
-            blocking=True,
-            host=database_info.host,
-            port=database_info.port,
-            user=database_info.user,
-            password=database_info.pwd,
-            database=database_info.database,
-            charset='utf8mb4',
-        )
-        self.connection = None
+        try:
+            self.cnx_pool = mysql.connector.pooling.MySQLConnectionPool(pool_name="mypool",
+                                                                        pool_size=10,
+                                                                        **database_info)
+        except mysql.connector.Error as err:
+            raise PluginFailErr(err)
 
-    def get_connection(self): return self.pool_db.connection()
+    def get_connection(self):
+        return self.cnx_pool.get_connection()
 
-    def close(self): self.pool_db.close()
+    def close(self): ...

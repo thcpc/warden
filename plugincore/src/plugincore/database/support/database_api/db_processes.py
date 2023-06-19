@@ -14,6 +14,7 @@ class DBProcess:
         thread_db = DBProcess(driver_info)
         return thread_db.fetchmany(sqls)
 
+    def close(self): ...
     def fetchmany(self, sql_statements: list[str]):
         pool = multiprocessing.Pool(processes=DBProcess.MAX_PARALLEL_WORKERS)
         results = []

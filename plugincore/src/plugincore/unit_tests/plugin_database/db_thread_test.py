@@ -9,7 +9,9 @@ from plugincore.unit_tests.plugin_database.test_select_data import database_info
 
 def db_thread_select():
     start = time.perf_counter()
-    tdb = DBThread(db_driver=DBDriver(DataBaseInfo(database_info_dict)))
+    tdb = DBThread(db_driver=DBDriver(database_info_dict))
+    print(time.perf_counter() - start)
+    start = time.perf_counter()
     for r in tdb.fetchmany(sql_statements=select_sqls):
         print(r)
     print(time.perf_counter() - start)

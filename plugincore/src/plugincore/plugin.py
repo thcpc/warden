@@ -57,16 +57,16 @@ class Plugin:
 
     def _run_pre_processors(self, form_data: dict):
         for processor in self.pre_processors:
-            record = Cglib.plugin_factory(processor.plugin_id, processor.version).run(form_data)
-            record = record << {"processor": processor.name}
-            self.plugin_run_audit.append(record)
+            audit = Cglib.plugin_factory(processor.plugin_id, processor.version).run(form_data)
+            audit << {"processor": processor.name}
+            self.plugin_run_audit.append(audit)
             if not self.plugin_run_audit.ok: break
 
     def _run_post_processors(self, form_data: dict):
         for processor in self.post_processors:
-            record = Cglib.plugin_factory(processor.plugin_id, processor.version).run(form_data)
-            record = record << {"processor": processor.name}
-            self.plugin_run_audit.append(record)
+            audit = Cglib.plugin_factory(processor.plugin_id, processor.version).run(form_data)
+            audit << {"processor": processor.name}
+            self.plugin_run_audit.append(audit)
             if not self.plugin_run_audit.ok: break
 
     """

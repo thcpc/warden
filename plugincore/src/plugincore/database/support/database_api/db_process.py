@@ -11,8 +11,11 @@ class DBProcess:
     def __init__(self, driver_info: dict):
         self.driver_info = driver_info
 
+    # 只是为了保证接口统一并不处理
+    def close(self): ...
+
     def fetchmany_worker(self, driver_info, sqls):
-        thread_db = DBThread(DBDriver(DataBaseInfo(driver_info)))
+        thread_db = DBThread(DBDriver(driver_info))
         return thread_db.fetchmany(sqls)
 
     def workers(self, sql_statements: list[str]):
