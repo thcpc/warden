@@ -31,9 +31,10 @@ class DBThread:
 
     def commit(self, sql_statements: list[str]):
         db_one = DBOne(self.db_driver)
+        executor = ThreadPoolExecutor(max_workers=DBThread.MAX_PARALLEL_THREAD)
         thread_list = []
         while sql_statements:
-            thread = self.executor.submit(db_one.commit, sql_statements.pop())
+            thread = executor.submit(db_one.commit, sql_statements.pop())
             thread_list.append(thread)
         for task in as_completed(thread_list):
             self.queries.append(task.result()[0])

@@ -75,6 +75,6 @@ database_info_dict = {
     "user": "root",
     "port": 3306,
     "password": "8YTJWOuA7XRK17wRQnw4",
-    "database": "eclinical_edc_dev_863"
+    "database": "test_data_import"
 
 }

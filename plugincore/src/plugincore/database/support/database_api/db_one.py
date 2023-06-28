@@ -38,9 +38,24 @@ class DBOne:
 
     def commit_blob(self, sql_statement_blob: str, spliter: str = ";\n"):
         sql_statements = sql_statement_blob.split(spliter)
-        self.commit(sql_statements)
+        self.commit_batch(sql_statements)
 
-    def commit(self, sql_statements: list[str]):
+    def commit(self, sql_statement: str):
+        cursor = None
+        connection = None
+        try:
+            connection = self.db_driver.get_connection()
+            cursor = connection.cursor()
+            cursor.execute("SET FOREIGN_KEY_CHECKS = 0;")
+            cursor.execute(sql_statement.strip())
+            connection.commit()
+        except Exception as e:
+            connection.rollback()
+            raise PluginFailErr(e)
+        finally:
+            self.final(cursor, connection)
+
+    def commit_batch(self, sql_statements: list[str]):
         cursor = None
         connection = None
         try:

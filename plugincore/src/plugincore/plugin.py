@@ -121,3 +121,6 @@ class Plugin:
 
     def progress(self):
         ...
+
+    def form_data(self, submit_form) -> dict:
+        ...
