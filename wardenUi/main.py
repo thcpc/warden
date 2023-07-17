@@ -2,6 +2,7 @@ import importlib
 from plugincore.cglib import Cglib
 from flask import Blueprint, render_template, request
 
+
 bp = Blueprint("main", __name__, url_prefix="/")
 
 
@@ -12,7 +13,10 @@ def index():
 
 @bp.route('/submit_task', methods=['POST'])
 def submit_task():
-    form = request.form
+    pid = request.form.get("id")
+    version = request.form.get("version")
+    plugin = Cglib.plugin_factory(pid, version)
+    plugin.run(form_data=plugin.form_data(), need_estimate=True)
 
 
 def user_settings() -> list[dict]:

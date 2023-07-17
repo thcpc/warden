@@ -1,0 +1,6 @@
+id: "config_lib"
+name: "配置"
+description: "返回各种配置"
+version: '1_0_0'
+env: 'dev'
+

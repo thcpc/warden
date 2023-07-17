@@ -1,0 +1,2 @@
+[wmysql_lib_1_0_0.plugin]
+wmysql_lib = wmysql_lib_1_0_0.wmysql_lib_plugin:WMysqlLibPlugin

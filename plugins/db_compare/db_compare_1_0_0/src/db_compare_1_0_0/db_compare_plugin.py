@@ -20,13 +20,47 @@ class DbComparePlugin(Plugin):
         env = Environment(loader=loader)
         template = env.get_template("home.jinjia.html")
 
-        return template.render()
+        return template.render(id=self.id, version=self.version)
+
+    def form_data(self, submit_form) -> dict:
+        form_data = {
+            self.id: dict(databases=[{"host": "dev-03-instance-1.c9qe4y0vrvda.rds.cn-northwest-1.amazonaws.com.cn",
+                                   "user": "root",
+                                   "pwd": "8YTJWOuA7XRK17wRQnw4",
+                                   "port": 3306,
+                                   "database": "eclinical_edc_dev_860"},
+                                  {"host": "dev-03-instance-1.c9qe4y0vrvda.rds.cn-northwest-1.amazonaws.com.cn",
+                                   "user": "root",
+                                   "port": 3306,
+                                   "pwd": "8YTJWOuA7XRK17wRQnw4",
+                                   "database": "eclinical_edc_dev_863"}]),
+            "wmysql_lib": dict(database_ops=[dict(operate="DumpIn",
+                                                  database_info={
+                                                      "host": "dev-03-instance-1.c9qe4y0vrvda.rds.cn-northwest-1.amazonaws.com.cn",
+                                                      "user": "root",
+                                                      "port": 3306,
+                                                      "pwd": "8YTJWOuA7XRK17wRQnw4",
+                                                      "database": "eclinical_edc_dev_860"
+
+                                                  }, sql_file=p.prepare_procedure),
+                                             dict(operate="DumpIn",
+                                                  database_info={
+                                                      "host": "dev-03-instance-1.c9qe4y0vrvda.rds.cn-northwest-1.amazonaws.com.cn",
+                                                      "user": "root",
+                                                      "port": 3306,
+                                                      "pwd": "8YTJWOuA7XRK17wRQnw4",
+                                                      "database": "eclinical_edc_dev_863"
+
+                                                  }, sql_file=p.prepare_procedure)
+                                             ]),
+            "diff_report_lib": dict(task_id=11111, title="测试", left="xxxxxx", right="ddddddd")}
+        return form_data
 
     @property
     def prepare_procedure(self):
         return os.path.join(path.dirname(__file__), "resources", "get_ddl_procedure.sql")
 
-    def task(self, form_data: dict):
+    def processor(self, form_data: dict):
         plugin_form = DbComparePluginForm(self, form_data)
         compare_task = CompareTask([Schema(database).load() for database in plugin_form.databases])
         compare_task.run()

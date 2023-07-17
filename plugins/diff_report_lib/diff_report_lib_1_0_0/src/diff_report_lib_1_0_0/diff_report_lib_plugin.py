@@ -17,6 +17,15 @@ class DiffReportLibPlugin(Plugin):
 
     def task(self, form_data: dict):
         try:
-            HtmlFactory(DiffReportLibPluginForm(self, form_data)).gen(self.env)
+            diff_form = DiffReportLibPluginForm(self, form_data)
+            HtmlFactory(diff_form).gen(self.env)
+            self.audit(dict(status=200, msg=f'{self.id} create report {diff_form.title} finish'))
         except Exception as e:
             raise PluginFailErr(e)
+
+    """
+    如果在task 添加了 audit, 则在计算步骤的时候，需增加一个父类的estimate
+    """
+    def estimate(self, form_data) -> int:
+        return super().estimate(form_data) + 1
+

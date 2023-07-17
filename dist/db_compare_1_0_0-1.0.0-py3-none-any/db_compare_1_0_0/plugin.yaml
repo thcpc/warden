@@ -1,7 +1,0 @@
-id: "db_compare"
-name: "表结构对比"
-description: "数据库结构比对工具，主要用来比对指定的两个 schema 的结构是否一致"
-version: '1_0_0'
-before_plugins:
-  - plugin_id: wmysql
-    version: '1_0_0'

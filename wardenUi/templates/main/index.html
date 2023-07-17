@@ -66,7 +66,7 @@
 
 <body>
     {% macro modal(content) -%}
-        {{content}}
+    {{content}}
     {%- endmacro %}
     <!-- Preloader -->
     <div class="preloader">
@@ -93,24 +93,24 @@
     </div>
     {% for card in task_cards %}
     <div class="modal fade" id="{{card.id}}Modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">{{card.name}}</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-          {{ card.home | safe }}
-      </div>
-<!--      <div class="modal-footer">-->
-<!--        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
-<!--        <button type="button" class="btn btn-primary">Save changes</button>-->
-<!--      </div>-->
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">{{card.name}}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{ card.home | safe }}
+                </div>
+                <!--      <div class="modal-footer">-->
+                <!--        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
+                <!--        <button type="button" class="btn btn-primary">Save changes</button>-->
+                <!--      </div>-->
+            </div>
+        </div>
     </div>
-  </div>
-</div>
     {% endfor %}
 
 
@@ -178,14 +178,15 @@
             <div class="row mt-5">
                 {% for card in task_cards %}
                 <div class="col-md-4">
-                    <div class="card" id = "{{card.id}}" data-toggle="modal" data-target="#{{card.id}}Modal">
+                    <div class="card" id="{{card.id}}">
                         <div class="card-body pb-5">
                             <div class="pt-4 pb-5">
-                                <img src="static/img/svg/illustrations/illustration-{{loop.index}}.svg"    
+                                <img src="static/img/svg/illustrations/illustration-{{loop.index}}.svg"
                                     class="img-fluid img-center" style="height: 150px;" alt="Illustration" />
-                            </div>  
-                                <h5 class="h4 lh-130 mb-3">{{card.name}}</h5>
-                                <p class="text-muted mb-0">{{card.description}}</p>
+                            </div>
+                            <h5 class="h4 lh-130 mb-3">{{card.name}}</h5>
+                            <p class="text-muted mb-3">{{card.description}}</p>
+                            <button type="button" class="btn btn-lg btn-primary"  data-toggle="modal" data-target="#{{card.id}}Modal">Get Started</button>
                         </div>
                     </div>
                 </div>
@@ -206,6 +207,21 @@
             'width': '1em',
             'height': '1em'
         })
+    </script>
+    <script type="text/javascript">
+        var source = new EventSource('/my-event-stream'); // 创建 EventSource 对象，指定服务器端点
+
+        source.onopen = function () {
+            console.log('Connection opened.'); // 连接建立成功
+        };
+
+        source.onerror = function () {
+            console.log('Error occurred.'); // 连接错误
+        };
+
+        source.onmessage = function (event) {
+            console.log('Message received: ' + event.data); // 接收到服务器发送的消息
+        };
     </script>
 </body>
 

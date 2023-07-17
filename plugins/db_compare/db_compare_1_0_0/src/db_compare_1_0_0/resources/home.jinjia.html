@@ -1,86 +1,134 @@
-<form class="was-validated">
-  <div class="mb-3">
-    <label for="validationTextarea">Textarea</label>
-    <textarea class="form-control is-invalid" id="validationTextarea" placeholder="Required example textarea"
-      required></textarea>
-
-    <div class="valid-feedback">
-      OK
-    </div>
-  </div>
-
-  <div class="custom-control custom-checkbox mb-3">
-    <input type="checkbox" class="custom-control-input" id="customControlValidation1" required>
-    <label class="custom-control-label" for="customControlValidation1">Check this custom checkbox</label>
-    <div class="invalid-feedback">Example invalid feedback text</div>
-  </div>
-
-  <div class="custom-control custom-radio">
-    <input type="radio" class="custom-control-input" id="customControlValidation2" name="radio-stacked" required>
-    <label class="custom-control-label" for="customControlValidation2">Toggle this custom radio</label>
-  </div>
-  <div class="custom-control custom-radio mb-3">
-    <input type="radio" class="custom-control-input" id="customControlValidation3" name="radio-stacked" required>
-    <label class="custom-control-label" for="customControlValidation3">Or toggle this other custom radio</label>
-    <div class="invalid-feedback">More example invalid feedback text</div>
-  </div>
-
-  <div class="mb-3">
-    <select class="custom-select" required>
-      <option value="">Choose...</option>
-      <option value="1">One</option>
-      <option value="2">Two</option>
-      <option value="3">Three</option>
-    </select>
-    <div class="invalid-feedback">Example invalid custom select feedback</div>
-  </div>
-
-  <div class="custom-file mb-3">
-    <input type="file" class="custom-file-input" id="validatedCustomFile" required>
-    <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>
-    <div class="invalid-feedback">Example invalid custom file feedback</div>
-  </div>
-
-  <div class="mb-3">
-    <div class="input-group is-invalid">
-      <div class="input-group-prepend">
-        <span class="input-group-text" id="validatedInputGroupPrepend">@</span>
-      </div>
-      <input type="text" class="form-control is-invalid" aria-describedby="validatedInputGroupPrepend" required>
-    </div>
-    <div class="invalid-feedback">
-      Example invalid input group feedback
-    </div>
-  </div>
-
-  <div class="mb-3">
-    <div class="input-group is-invalid">
-      <div class="input-group-prepend">
-        <label class="input-group-text" for="validatedInputGroupSelect">Options</label>
-      </div>
-      <select class="custom-select" id="validatedInputGroupSelect" required>
-        <option value="">Choose...</option>
-        <option value="1">One</option>
-        <option value="2">Two</option>
-        <option value="3">Three</option>
+<form class="was-validated" action="/submit_task" method="POST" enctype="multipart/form-data">
+  <input name="id" hidden value="{{id}}">
+  <input name="version" hidden value="{{version}}">
+  <h4 class="mb-3">左边</h4>
+  <div class="row">
+    <div class="col-md-4 mb-3">
+      <label for="DBENV1">环境</label>
+      <select class="custom-select d-block w-100" id="DBENV1" name="DBENV1">
+        <option value="DEV01">DEV01</option>
+        <option value="DEV02">DEV02</option>
       </select>
     </div>
-    <div class="invalid-feedback">
-      Example invalid input group feedback
+    <div class="col-md-7 mb-3">
+      <label for="schema1">Schema</label>
+      <input type="text" list="schemaLeft" class="form-control" id="schema1" name="schema1" placeholder required>
+      <div class="invalid-feedback">schema 需填写</div>
     </div>
+    <datalist id="schemaLeft">
+      <option value="e111"></option>
+      <option value="e289"></option>
+      <option value="dfg4"></option>
+      <option value="d13"></option>
+      <option value="g01"></option>
+    </datalist>
   </div>
+  <h4 class="mb-3">右边</h4>
+  <div class="row">
+    <div class="col-md-4 mb-3">
+      <label for="DBENV2">环境</label>
+      <select class="custom-select d-block w-100" id="DBENV2" name="DBENV2">
+        <option value="DEV01">DEV01</option>
+        <option value="DEV02">DEV02</option>
+      </select>
+    </div>
+    <div class="col-md-7 mb-3">
+      <label for="schema2">Schema</label>
+      <input type="text" list="schemaRight" class="form-control" id="schema2" name="schema2" placeholder required>
+      <div class="invalid-feedback">schema 需填写</div>
+    </div>
+    <datalist id="schemaRight">
+      <option value="e111"></option>
+      <option value="e289"></option>
+      <option value="dfg4"></option>
+      <option value="d13"></option>
+      <option value="g01"></option>
+    </datalist>
+  </div>
+<!--  <div class="mb-3">-->
+<!--    <label for="validationTextarea">Textarea</label>-->
+<!--    <textarea class="form-control is-invalid" id="validationTextarea" placeholder="Required example textarea"-->
+<!--      required></textarea>-->
 
-  <div class="input-group is-invalid">
-    <div class="custom-file">
-      <input type="file" class="custom-file-input" id="validatedInputGroupCustomFile" required>
-      <label class="custom-file-label" for="validatedInputGroupCustomFile">Choose file...</label>
-    </div>
-    <div class="input-group-append">
-      <button class="btn btn-outline-secondary" type="button">Button</button>
-    </div>
+<!--    <div class="valid-feedback">-->
+<!--      OK-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--  <div class="custom-control custom-checkbox mb-3">-->
+<!--    <input type="checkbox" class="custom-control-input" id="customControlValidation1" required>-->
+<!--    <label class="custom-control-label" for="customControlValidation1">Check this custom checkbox</label>-->
+<!--    <div class="invalid-feedback">Example invalid feedback text</div>-->
+<!--  </div>-->
+
+<!--  <div class="custom-control custom-radio">-->
+<!--    <input type="radio" class="custom-control-input" id="customControlValidation2" name="radio-stacked" required>-->
+<!--    <label class="custom-control-label" for="customControlValidation2">Toggle this custom radio</label>-->
+<!--  </div>-->
+<!--  <div class="custom-control custom-radio mb-3">-->
+<!--    <input type="radio" class="custom-control-input" id="customControlValidation3" name="radio-stacked" required>-->
+<!--    <label class="custom-control-label" for="customControlValidation3">Or toggle this other custom radio</label>-->
+<!--    <div class="invalid-feedback">More example invalid feedback text</div>-->
+<!--  </div>-->
+
+<!--  <div class="mb-3">-->
+<!--    <select class="custom-select" required>-->
+<!--      <option value="">Choose...</option>-->
+<!--      <option value="1">One</option>-->
+<!--      <option value="2">Two</option>-->
+<!--      <option value="3">Three</option>-->
+<!--    </select>-->
+<!--    <div class="invalid-feedback">Example invalid custom select feedback</div>-->
+<!--  </div>-->
+
+<!--  <div class="custom-file mb-3">-->
+<!--    <input type="file" class="custom-file-input" id="validatedCustomFile" required>-->
+<!--    <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>-->
+<!--    <div class="invalid-feedback">Example invalid custom file feedback</div>-->
+<!--  </div>-->
+
+<!--  <div class="mb-3">-->
+<!--    <div class="input-group is-invalid">-->
+<!--      <div class="input-group-prepend">-->
+<!--        <span class="input-group-text" id="validatedInputGroupPrepend">@</span>-->
+<!--      </div>-->
+<!--      <input type="text" class="form-control is-invalid" aria-describedby="validatedInputGroupPrepend" required>-->
+<!--    </div>-->
+<!--    <div class="invalid-feedback">-->
+<!--      Example invalid input group feedback-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--  <div class="mb-3">-->
+<!--    <div class="input-group is-invalid">-->
+<!--      <div class="input-group-prepend">-->
+<!--        <label class="input-group-text" for="validatedInputGroupSelect">Options</label>-->
+<!--      </div>-->
+<!--      <select class="custom-select" id="validatedInputGroupSelect" required>-->
+<!--        <option value="">Choose...</option>-->
+<!--        <option value="1">One</option>-->
+<!--        <option value="2">Two</option>-->
+<!--        <option value="3">Three</option>-->
+<!--      </select>-->
+<!--    </div>-->
+<!--    <div class="invalid-feedback">-->
+<!--      Example invalid input group feedback-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--  <div class="input-group is-invalid">-->
+<!--    <div class="custom-file">-->
+<!--      <input type="file" class="custom-file-input" id="validatedInputGroupCustomFile" required>-->
+<!--      <label class="custom-file-label" for="validatedInputGroupCustomFile">Choose file...</label>-->
+<!--    </div>-->
+<!--    <div class="input-group-append">-->
+<!--      <button class="btn btn-outline-secondary" type="button">Button</button>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--  <div class="invalid-feedback">-->
+<!--    Example invalid input group feedback-->
+<!--  </div>-->
+  <div class="d-flex justify-content-end">
+    <button class="btn btn-primary" type="submit">提交</button>
   </div>
-  <div class="invalid-feedback">
-    Example invalid input group feedback
-  </div>
-  <button class="btn btn-primary" type="submit">Submit form</button>
 </form>

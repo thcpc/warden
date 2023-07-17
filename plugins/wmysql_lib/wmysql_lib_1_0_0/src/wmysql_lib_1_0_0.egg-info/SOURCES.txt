@@ -1,0 +1,15 @@
+pyproject.toml
+setup.cfg
+src/wmysql_lib_1_0_0/__init__.py
+src/wmysql_lib_1_0_0/plugin.yaml
+src/wmysql_lib_1_0_0/wmysql_lib_plugin.py
+src/wmysql_lib_1_0_0/wmysql_lib_plugin_form.py
+src/wmysql_lib_1_0_0.egg-info/PKG-INFO
+src/wmysql_lib_1_0_0.egg-info/SOURCES.txt
+src/wmysql_lib_1_0_0.egg-info/dependency_links.txt
+src/wmysql_lib_1_0_0.egg-info/entry_points.txt
+src/wmysql_lib_1_0_0.egg-info/top_level.txt
+src/wmysql_lib_1_0_0/operate/__init__.py
+src/wmysql_lib_1_0_0/operate/dump_in.py
+src/wmysql_lib_1_0_0/operate/dump_out.py
+src/wmysql_lib_1_0_0/resources/get_ddl_produre.sql

@@ -3,6 +3,8 @@ from os import path
 
 
 from plugincore import Plugin
+from plugincore.database.support.mysql_dump.dump_in import DumpIn
+from plugincore.database.support.mysql_dump.dump_out import DumpOut
 
 from wmysql_lib_1_0_0.properties.form.wmysql_lib_plugin_form import WmysqlLibPluginForm
 
@@ -12,7 +14,7 @@ class WMysqlLibPlugin(Plugin):
     def __init__(self):
         super().__init__(abs_path=path.dirname(__file__))
 
-    def task(self, form_data: dict):
+    def processor(self, form_data: dict):
         plugin_form = WmysqlLibPluginForm(self, form_data)
         for op in plugin_form.database_ops:
             dump = {"DumpIn": DumpIn, "DumpOut": DumpOut}.get(op.operate)

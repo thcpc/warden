@@ -4,20 +4,18 @@ import os
 import cjen
 from cjen import BigTangerine, DatabasePool
 from cjen.bigtangerine import ContextArgs
+from cjen.db_bigtangerine import DBBigTangerine
 from cjen.nene.helper import FileHelper
 
+
+from db_compare_1_0_0.db_compare_plugin_form import DataBaseInfo
 from db_compare_1_0_0.entities.ddl import DDL
 from db_compare_1_0_0.entities.table import Table
 
 
-class Schema(BigTangerine):
-    def __init__(self, schema_info: dict):
-        super().__init__()
-        self.context["cursor"] = DatabasePool.cursor(host=schema_info.get("host"),
-                                                     port=schema_info.get("port"),
-                                                     user=schema_info.get("user"),
-                                                     pwd=schema_info.get("pwd"),
-                                                     database=schema_info.get("database"))
+class Schema(DBBigTangerine):
+    def __init__(self, schema_info: DataBaseInfo):
+        super().__init__(schema_info)
         self.context["table_dds"] = dict()
 
     @cjen.operate.mysql.factory(clazz=Table, size=-1, sql="SELECT DISTINCT TABLE_NAME as name FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME NOT LIKE 'vw%';")
@@ -25,6 +23,7 @@ class Schema(BigTangerine):
         for table in tables:
             self.context["table_name"] = table.name()
             self.get_ddls()
+        return self
 
     @cjen.operate.mysql.factory(clazz=DDL, sql=FileHelper.cur_read(cur=__file__, file=os.path.join("resources/get_ddl.sql")), params=ContextArgs(table_name="table_name"), track=True)
     def get_ddls(self, ddl: DDL = None, **kwargs):

@@ -1,0 +1,6 @@
+.idea/
+**/__pycache__
+venv
+unit_tests/*.html
+unit_tests/*.log
+
